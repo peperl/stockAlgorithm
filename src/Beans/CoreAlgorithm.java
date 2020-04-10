@@ -31,6 +31,8 @@ public class CoreAlgorithm {
         BinaryOperations bo = new BinaryOperations();
         List<Long> longValues = new ArrayList();
         
+        //ETAPA 1 
+        // CREAR UNA POBLACIÓN ALEATORIA
         for (int i = 0; i < populationSize; i++) {
             long aux = random.nextLong();
             if (aux < 0) {
@@ -39,11 +41,30 @@ public class CoreAlgorithm {
             longValues.add(aux);
         }
         
+        
+        //ETAPA 2
+        //Adecuar cada individuo a los valores que estarán activos.
+        
         for (Long longValue : longValues) {
             //Valores activos se usaran solamente sus primeros 7 bits como banderas
             //para conocer si ese valor estará activo o no.
             longValue = bo.setId(longValue, valoresActivos);
         }
        
+        
+        //CICLO POR LO QUE SE INDIQUE EN LOS PARÁMETROS
+        
+        
+        //ETAPA 3
+        //COMPARACIÓN DE INDIVIDUOS MÁS APTOS
+        
+        //ETAPA 4
+        //CRUZA
+        
+        
+        //ETAPA 5
+        //MUTACIÓN
+        
+        
     }
 }

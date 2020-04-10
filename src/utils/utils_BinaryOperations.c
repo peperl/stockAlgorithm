@@ -7,7 +7,7 @@
 // gcc -fPIC -shared -I/usr/local/jdk1.8.0_111/include -I/usr/local/jdk1.8.0_111/include/linux utils_BinaryOperations.c
 
 long getPercentage(long id, long position) {
-    return 0xFF & (id >> 7 * position);
+    return 0x7F & (id >> 7 * position);
 }
 
 void showId(long id) {
@@ -33,11 +33,10 @@ long initialize(long id, long inversionsOn) {
 
     for(int i = 1; i <= 7; i++) {
 
-        aux = inversionsOn << (8*8 - i);
-        aux = aux >> (8*8 - 1);
-
+        aux = inversionsOn & (1 << (i - 1));
+        
         if(aux == 0) {
-            aux2 = getPercentage(id,i-1);
+            aux2 = getPercentage(id, i - 1 );
             id -= (aux2 << (7 * (i - 1)));
         }
     }
@@ -48,10 +47,10 @@ long aquote(long id) {
 
     long aux[7];
     long totalPercentage = 0;
+    
     for(int i = 0; i < 7; i++) {
         aux[i] = getPercentage(id, i);
         totalPercentage += aux[i];
-
     }
 
     if(totalPercentage > 100) {
@@ -79,8 +78,8 @@ long aquote(long id) {
     }
     //create the new number con la variable aux[]
     id = 0;
-    for(int i = 1; i <= 7; i++) {
-        id = setPercentage(id,i,aux[i-1]);
+    for(int i = 0; i < 7; i++) {
+        id += aux[i] << 7 * i;
     }
     return id;
 }
@@ -95,7 +94,7 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_getPercentage
 
     long id = (long) id_;
     long position = (long) position_;
-	return 0xFF & (id >> 7 * position);
+	return 0x7F & (id >> 7 * position);
 }
 
 /*
@@ -200,11 +199,9 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setId
 
     long id = (long) id_;
     long inversionsOn = inversionsOn_;
-    id = id << 15;
-    id = id >> 15;
     id = initialize(id, inversionsOn);
     id = aquote(id);
-
+    showId(id);
     return id;
 }
 

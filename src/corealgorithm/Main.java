@@ -18,7 +18,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        CoreAlgorithm ca = new CoreAlgorithm(5, 50000, 1, 1);
+        CoreAlgorithm ca = new CoreAlgorithm(5, 50000, 1, 5);
     }
     
 }
