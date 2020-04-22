@@ -27,10 +27,24 @@ public class CoreAlgorithm {
      */
     public CoreAlgorithm(int time, double money, long valoresActivos, int populationSize){
         
+        List<Long> longValues = initialPopulation(populationSize, valoresActivos);
+        
+        
+        //ETAPA 3
+        //CRUZA
+        
+        
+        //ETAPA 4
+        //MUTACIÓN
+        
+    }
+
+    private List<Long> initialPopulation(long populationSize, long valoresActivos) {
+
         Random random = new Random();
         BinaryOperations bo = new BinaryOperations();
         List<Long> longValues = new ArrayList();
-        
+
         //ETAPA 1 
         // CREAR UNA POBLACIÓN ALEATORIA
         for (int i = 0; i < populationSize; i++) {
@@ -50,21 +64,7 @@ public class CoreAlgorithm {
             //para conocer si ese valor estará activo o no.
             longValue = bo.setId(longValue, valoresActivos);
         }
-       
         
-        //CICLO POR LO QUE SE INDIQUE EN LOS PARÁMETROS
-        
-        
-        //ETAPA 3
-        //COMPARACIÓN DE INDIVIDUOS MÁS APTOS
-        
-        //ETAPA 4
-        //CRUZA
-        
-        
-        //ETAPA 5
-        //MUTACIÓN
-        
-        
-    }
+        return longValues;
+    }   
 }

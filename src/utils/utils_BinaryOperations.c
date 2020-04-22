@@ -34,7 +34,7 @@ long initialize(long id, long inversionsOn) {
     for(int i = 1; i <= 7; i++) {
 
         aux = inversionsOn & (1 << (i - 1));
-        
+
         if(aux == 0) {
             aux2 = getPercentage(id, i - 1 );
             id -= (aux2 << (7 * (i - 1)));
@@ -47,7 +47,7 @@ long aquote(long id) {
 
     long aux[7];
     long totalPercentage = 0;
-    
+
     for(int i = 0; i < 7; i++) {
         aux[i] = getPercentage(id, i);
         totalPercentage += aux[i];
@@ -58,7 +58,7 @@ long aquote(long id) {
         while(totalPercentage > 100) {
 
             for(int i = 0; i < 7; i++) {
-                if(aux[i] > 1 & totalPercentage > 100) {
+                if(aux[i] > 1 & totalPercentage > 100 & (aux[i] != 0)) {
                     aux[i] -= 1;
                     totalPercentage -= 1;
                 }
@@ -69,7 +69,7 @@ long aquote(long id) {
 
         while(totalPercentage < 100) {
             for(int i = 0; i < 7; i++) {
-                if( aux[i] < 100 & totalPercentage < 100) {
+                if( aux[i] < 100 & totalPercentage < 100 & (aux[i] != 0)) {
                     aux[i] += 1;
                     totalPercentage += 1;
                 }
@@ -162,7 +162,7 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote
 
         while(totalPercentage > 100) {
             for(int i = 0; i < 7; i++) {
-                if(aux[i] > 1 & totalPercentage > 100) {
+                if(aux[i] > 1 & totalPercentage > 100 & (aux[i] != 0 ) ) {
                     aux[i]-=1;
                     totalPercentage-=1;
                 }
@@ -173,7 +173,7 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote
 
         while(totalPercentage < 100) {
             for(int i = 0; i < 7; i++) {
-                if(aux[i] < 100 & totalPercentage < 100) {
+                if(aux[i] < 100 & totalPercentage < 100 & (aux[i] != 0 )) {
                     aux[i]+=1;
                     totalPercentage+=1;
                 }
@@ -201,7 +201,7 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setId
     long inversionsOn = inversionsOn_;
     id = initialize(id, inversionsOn);
     id = aquote(id);
-    showId(id);
+    //showId(id);
     return id;
 }
 
