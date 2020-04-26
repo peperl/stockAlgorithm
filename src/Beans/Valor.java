@@ -16,8 +16,8 @@ import java.util.Objects;
 public class Valor {
     
     private String name;
-    private double rendimiento;
-    private double tiempo_de_inversion;
+    private double plazo;
+    private double taza;
 
     public String getName() {
         return name;
@@ -27,28 +27,28 @@ public class Valor {
         this.name = name;
     }
 
-    public double getRendimiento() {
-        return rendimiento;
+    public double getPlazo() {
+        return plazo;
     }
 
-    public void setRendimiento(double rendimiento) {
-        this.rendimiento = rendimiento;
+    public void setPlazo(double plazo) {
+        this.plazo = plazo;
     }
 
-    public double getTiempo_de_inversion() {
-        return tiempo_de_inversion;
+    public double getTaza() {
+        return taza;
     }
 
-    public void setTiempo_de_inversion(double tiempo_de_inversion) {
-        this.tiempo_de_inversion = tiempo_de_inversion;
+    public void setTaza(double taza) {
+        this.taza = taza;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 83 * hash + Objects.hashCode(this.name);
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.rendimiento) ^ (Double.doubleToLongBits(this.rendimiento) >>> 32));
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.tiempo_de_inversion) ^ (Double.doubleToLongBits(this.tiempo_de_inversion) >>> 32));
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.plazo) ^ (Double.doubleToLongBits(this.plazo) >>> 32));
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.taza) ^ (Double.doubleToLongBits(this.taza) >>> 32));
         return hash;
     }
 
@@ -64,10 +64,10 @@ public class Valor {
             return false;
         }
         final Valor other = (Valor) obj;
-        if (Double.doubleToLongBits(this.rendimiento) != Double.doubleToLongBits(other.rendimiento)) {
+        if (Double.doubleToLongBits(this.plazo) != Double.doubleToLongBits(other.plazo)) {
             return false;
         }
-        if (Double.doubleToLongBits(this.tiempo_de_inversion) != Double.doubleToLongBits(other.tiempo_de_inversion)) {
+        if (Double.doubleToLongBits(this.taza) != Double.doubleToLongBits(other.taza)) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
@@ -78,7 +78,7 @@ public class Valor {
 
     @Override
     public String toString() {
-        return "Valor{" + "name=" + name + ", rendimiento=" + rendimiento + ", tiempo_de_inversion=" + tiempo_de_inversion + '}';
+        return "Valor{" + "name=" + name + ", rendimiento=" + plazo + ", tiempo_de_inversion=" + taza + '}';
     }
     
 }

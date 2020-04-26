@@ -32,7 +32,7 @@ public class CoreAlgorithm {
         
         //ETAPA 3
         //CRUZA
-        
+        longValues = cross(longValues);
         
         //ETAPA 4
         //MUTACIÓN
@@ -67,4 +67,10 @@ public class CoreAlgorithm {
         
         return longValues;
     }   
+
+    private List<Long> cross(List<Long> longValues) {
+        
+        return null;
+    }
+    
 }
