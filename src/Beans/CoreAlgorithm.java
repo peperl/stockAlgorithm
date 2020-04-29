@@ -29,7 +29,6 @@ public class CoreAlgorithm {
         
         List<Long> longValues = initialPopulation(populationSize, valoresActivos);
         
-        
         //ETAPA 3
         //CRUZA
         longValues = cross(longValues);
@@ -63,6 +62,9 @@ public class CoreAlgorithm {
             //Valores activos se usaran solamente sus primeros 7 bits como banderas
             //para conocer si ese valor estará activo o no.
             longValue = bo.setId(longValue, valoresActivos);
+            
+            //calcular su 
+            
         }
         
         return longValues;
