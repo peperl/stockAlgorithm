@@ -10,5 +10,5 @@ package Constantes;
  * @author pepe
  */
 public class Constantes {
-    public static final int NUM_TIPOS_DE_TITULO = 7;
+    public static final int NUM_TIPOS_DE_TITULO = 18;
 }
