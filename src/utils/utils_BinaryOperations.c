@@ -4,20 +4,24 @@
 #include "utils_BinaryOperations.h"   // Generated
 
 //terminal
-// gcc -fPIC -shared -I/usr/local/jdk1.8.0_111/include -I/usr/local/jdk1.8.0_111/include/linux utils_BinaryOperations.c
+// gcc -fPIC -shared -I/usr/local/jdk1.8.0_111/include -I/usr/local/jdk1.8.0_111/include/linux utils_BinaryOperations.c -o utils_BinaryOperations.so
 
-long getPercentage(long id, long position) {
-    return 0x7F & (id >> 7 * position);
+
+//CHECK 5-5-2020
+long getPercentage(long id_part1, long position) {
+    return 0x7F & (id_part1 >> 7 * position);
 }
 
+//CHECK 5-5-2020
 void showId(long id) {
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		printf(" %lu ", getPercentage(id,i));
 	}
 	printf("\n");
 }
 
+//CHECK 5-5-2020
 long setPercentage(long id, long position, long newValue) {
 
     id -= (getPercentage(id, position) << (position * 7));
@@ -31,7 +35,7 @@ long initialize(long id, long inversionsOn) {
 
     long aux, aux2;
 
-    for(int i = 1; i <= 7; i++) {
+    for(int i = 1; i <= 9; i++) {
 
         aux = inversionsOn & (1 << (i - 1));
 
@@ -43,46 +47,74 @@ long initialize(long id, long inversionsOn) {
     return id;
 }
 
-long aquote(long id) {
+long aquote(long id, long id_part2) {
 
-    long aux[7];
+    long aux[9], aux_part2[9];
     long totalPercentage = 0;
 
-    for(int i = 0; i < 7; i++) {
+    for(int i = 0; i < 9; i++) {
         aux[i] = getPercentage(id, i);
+        aux_part2[i] = getPercentage(id_part2, i);
         totalPercentage += aux[i];
+        totalPercentage += aux_part2[i];
     }
+
 
     if(totalPercentage > 100) {
 
         while(totalPercentage > 100) {
 
-            for(int i = 0; i < 7; i++) {
+            for(int i = 0; i < 9; i++) {
                 if(aux[i] > 1 & totalPercentage > 100 & (aux[i] != 0)) {
                     aux[i] -= 1;
                     totalPercentage -= 1;
                 }
             }
+            for(int i = 0; i < 9; i++) {
+                if(aux_part2[i] > 1 & totalPercentage > 100 & (aux_part2[i] != 0)) {
+                    aux_part2[i] -= 1;
+                    totalPercentage -= 1;
+                }
+            }            
         }
 
     } else if (totalPercentage < 100) {
 
         while(totalPercentage < 100) {
-            for(int i = 0; i < 7; i++) {
+            for(int i = 0; i < 9; i++) {
                 if( aux[i] < 100 & totalPercentage < 100 & (aux[i] != 0)) {
                     aux[i] += 1;
                     totalPercentage += 1;
                 }
             }
+            for(int i = 0; i < 9; i++) {
+                if( aux_part2[i] < 100 & totalPercentage < 100 & (aux_part2[i] != 0)) {
+                    aux_part2[i] += 1;
+                    totalPercentage += 1;
+                }
+            }            
         }
     }
     //create the new number con la variable aux[]
+
     id = 0;
-    for(int i = 0; i < 7; i++) {
+    for(int i = 0; i < 9; i++) {
         id += aux[i] << 7 * i;
     }
     return id;
 }
+
+long getValoresActivos(long valoresActivos, long part) {
+    if (part == 0)
+    {
+        return valoresActivos & 0x01FF;
+    } else {
+        return (valoresActivos>>9) & 0x1FF;
+    }
+}
+
+
+
 
 /*
  * Class:     utils_BinaryOperations
@@ -116,77 +148,79 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setPercentage
     return id;
 }
 
+
 /*
  * Class:     utils_BinaryOperations
- * Method:    initialize
- * Signature: (JJ)J
+ * Method:    aquote_part2
+ * Signature: (JJJ)J
  */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_initialize
-  (JNIEnv * env, jobject obj, jlong id_, jlong inversionsOn_) {
+JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote_1part2
+  (JNIEnv * env, jobject obj, jlong id_, jlong percentage_, jlong inversionsOn_) {
 
-  	long id = (long) id_;
-  	long inversionsOn = (long) inversionsOn_;
-    long aux, aux2;
+    long id = id_;
+    long percentage = percentage_;
+    long inversionsOn = inversionsOn_;
 
-    for(int i = 1; i <= 7; i++) {
+    id = initialize(id, inversionsOn);
 
-        aux = inversionsOn << (8*8 - i);
-        aux = aux >> (8*8 - 1);
+    long aux[9];
+    long totalPercentage = 0;
 
-        if(aux == 0) {
-            aux2 = getPercentage(id,i-1);
-            id -= (aux2 << (7 * (i - 1)));
+    for(int i = 0; i < 9; i++) {
+        aux[i] = getPercentage(id, i);
+        totalPercentage += aux[i];
+    }
+
+
+    if(totalPercentage > percentage) {
+
+        while(totalPercentage > percentage) {
+
+            for(int i = 0; i < 9; i++) {
+                if(aux[i] > 1 & totalPercentage > percentage & (aux[i] != 0)) {
+                    aux[i] -= 1;
+                    totalPercentage -= 1;
+                }
+            }
         }
+
+    } else if (totalPercentage < percentage) {
+
+        while(totalPercentage < percentage) {
+            for(int i = 0; i < 9; i++) {
+                if( aux[i] < percentage & totalPercentage < percentage & (aux[i] != 0)) {
+                    aux[i] += 1;
+                    totalPercentage += 1;
+                }
+            }
+        }
+    }
+    //create the new number con la variable aux[]
+
+    id = 0;
+    for(int i = 0; i < 9; i++) {
+        id += aux[i] << 7 * i;
     }
     return id;
 }
 
 /*
  * Class:     utils_BinaryOperations
- * Method:    aquote
- * Signature: (J)J
+ * Method:    getValoresActivos
+ * Signature: (JJ)J
  */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote
-  (JNIEnv * env, jobject obj, jlong id_) {
+JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_getValoresActivos
+  (JNIEnv * env, jobject obj, jlong valoresActivos_, jlong part_) {
 
-    long id = (long) id_;
-    long aux[7];
-    long totalPercentage = 0;
+    long part = part_;
+    long valoresActivos = valoresActivos_;
 
-    for(int i = 0; i < 7; i++) {
-        aux[i] = getPercentage(id, i);
-        totalPercentage+=aux[i];
+    if (part == 0)
+    {
+        return valoresActivos & 0x01FF;
+    } else {
+        return (valoresActivos>>9) & 0x1FF;
     }
-
-    if(totalPercentage > 100) {
-
-        while(totalPercentage > 100) {
-            for(int i = 0; i < 7; i++) {
-                if(aux[i] > 1 & totalPercentage > 100 & (aux[i] != 0 ) ) {
-                    aux[i]-=1;
-                    totalPercentage-=1;
-                }
-            }
-        }
-
-    } else if (totalPercentage < 100) {
-
-        while(totalPercentage < 100) {
-            for(int i = 0; i < 7; i++) {
-                if(aux[i] < 100 & totalPercentage < 100 & (aux[i] != 0 )) {
-                    aux[i]+=1;
-                    totalPercentage+=1;
-                }
-            }
-        }
-    }
-
-    //create the new number con la variable aux[]
-    id = 0;
-    for(int i = 1; i <= 7; i++) {
-        id = setPercentage(id,i,aux[i-1]);
-    }
-    return id;
 }
 
 /*
@@ -195,37 +229,21 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote
  * Signature: (JJ)J
  */
 JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setId
-  (JNIEnv * env, jobject obj, jlong id_, jlong inversionsOn_) {
+  (JNIEnv * env, jobject obj, jlong id_part1_, jlong id_part2_, jlong inversionsOn_) {
 
-    long id = (long) id_;
+    long id_part1 = (long) id_part1_;
+    long id_part2 = (long) id_part2_;
     long inversionsOn = inversionsOn_;
-    id = initialize(id, inversionsOn);
-    id = aquote(id);
-    //showId(id);
-    return id;
+
+    id_part1 = initialize(id_part1, inversionsOn);
+    id_part2 = initialize(id_part2, getValoresActivos(inversionsOn, 1));
+
+    id_part1 = aquote(id_part1, id_part2);
+
+
+    return id_part1;
 }
 
-/*
- * Class:     utils_BinaryOperations
- * Method:    cross
- * Signature: (JJ)J
- */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_cross
-  (JNIEnv * env, jobject obj, jlong id1_, jlong id2_) {
-
-	long id1 = (long) id1_;
-	long id2 = (long) id2_;
-    long aux, aux2;
-
-    aux = id1 << 15;
-    aux = id1 >> 15 + (7 * (7 - 3) );
-    aux = id1 << 7 * (7 - 3);
-
-    aux2 = id2 << 15 + (7 * (7 - 4 ) );
-    aux2 = id2 >> 15 + (7 * (7 - 4 ) );
-
-    return aux + aux2;
-}
 
 /*
  * Class:     utils_BinaryOperations

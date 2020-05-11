@@ -1,7 +1,6 @@
 package Beans;
 
 
-import Constantes.Constantes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,57 +18,77 @@ import utils.BinaryOperations;
  */
 public class CoreAlgorithm {
     
+    List<Portfolio> portfolios;
+    
+    
     /**
      * 
      * @param time en dias
      * @param money en pesos mexicanos
      * @param interes en rendimiento anual
      */
-    public CoreAlgorithm(int time, double money, long valoresActivos, int populationSize){
+    public CoreAlgorithm(int time, double money, ValoresActivos va, int populationSize){
         
-        List<Long> longValues = initialPopulation(populationSize, valoresActivos);
+        portfolios = new ArrayList<>();
+        initialPopulation(populationSize, va);        
         
         //ETAPA 3
         //CRUZA
-        longValues = cross(longValues);
+        //longValues = cross(longValues);
         
         //ETAPA 4
         //MUTACIÓN
         
     }
 
-    private List<Long> initialPopulation(long populationSize, long valoresActivos) {
-
+    private void initialPopulation(long populationSize, ValoresActivos valoresActivos) {
+        
         Random random = new Random();
         BinaryOperations bo = new BinaryOperations();
-        List<Long> longValues = new ArrayList();
+        
 
-        //ETAPA 1 
-        // CREAR UNA POBLACIÓN ALEATORIA
         for (int i = 0; i < populationSize; i++) {
-            long aux = random.nextLong();
-            if (aux < 0) {
-                aux += -1;
+            
+            Portfolio portfolio = new Portfolio();
+                    
+            //ETAPA 1 
+            // CREAR UNA POBLACIÓN ALEATORIA
+            long aux_part1 = random.nextLong();
+            long aux_part2 = random.nextLong();
+            
+            if (aux_part1 < 0) {
+                aux_part1 *= -1;
             }
-            longValues.add(aux);
+            if (aux_part2 < 0) {
+                aux_part2 *= -1;
+            }
+            
+            //ADECUARLAS AL 100%
+            long firstpart = bo.setId(aux_part1, aux_part2, valoresActivos.getVariable());
+            int porcentaje = 0;
+            for (int j = 0; j < 9; j++) {
+                porcentaje += bo.getPercentage(firstpart, j);
+            }
+            long secondpart = bo.aquote_part2(aux_part2, 100-porcentaje, valoresActivos.getVariable(1));
+            
+            portfolio.setId_part1(firstpart);
+            portfolio.setId_part2(secondpart);
+            
+            portfolios.add(portfolio);
         }
         
         
-        //ETAPA 2
-        //Adecuar cada individuo a los valores que estarán activos.
-        
-        for (Long longValue : longValues) {
-            //Valores activos se usaran solamente sus primeros 7 bits como banderas
-            //para conocer si ese valor estará activo o no.
-            longValue = bo.setId(longValue, valoresActivos);
-            
-            //calcular su 
-            
-        }
-        
-        return longValues;
     }   
 
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
+    }
+
+    
     private List<Long> cross(List<Long> longValues) {
         
         return null;

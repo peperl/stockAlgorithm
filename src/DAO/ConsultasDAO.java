@@ -5,8 +5,9 @@
  */
 package DAO;
 
-import Beans.Valor;
+
 import BeansDB.Historico;
+import BeansDB.Valor;
 import Connection.JavaConnectorMySQL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class ConsultasDAO {
 
-    private static String consulta = "SELECT Historico.fecha, Valores.nombre, Historico.tasa, Historico.plazo from Historico INNER JOIN Valores ON Historico.idValores = Valores.idValores where Historico.fecha = ?;";
+    private static String consulta = "SELECT Historico.fecha, Valores.nombre, Historico.tasa, Historico.plazo, Valores.plazo_completo from Historico INNER JOIN Valores ON Historico.idValores = Valores.idValores where Historico.fecha = ?;";
     
     List<Valor> valores;
     List <Historico> historicos;
@@ -35,13 +36,13 @@ public class ConsultasDAO {
     
     
 
-    public void consulta() throws ClassNotFoundException, SQLException {
+    public void consulta(Date fecha) throws ClassNotFoundException, SQLException {
         
         
         JavaConnectorMySQL connector = new JavaConnectorMySQL();
         Connection conn = connector.proceso();
         PreparedStatement stmt = conn.prepareStatement(consulta);  
-        stmt.setDate(1, java.sql.Date.valueOf("2020-04-24"));
+        stmt.setDate(1, fecha);
         
         ResultSet rs = stmt.executeQuery();
         
@@ -51,13 +52,31 @@ public class ConsultasDAO {
             Historico historico = new Historico();
                         
             historico.setFecha(rs.getDate(1).toLocalDate());
-            valor.setName(rs.getString(2));
+            valor.setNombre(rs.getString(2));
             historico.setTasa(rs.getInt(3));
             historico.setPlazo(rs.getInt(4));
+            valor.setPlazo_completo(rs.getInt(5));
             
             valores.add(valor);
             historicos.add(historico);
         }
-        
     }
+
+    public List<Valor> getValores() {
+        return valores;
+    }
+
+    public void setValores(List<Valor> valores) {
+        this.valores = valores;
+    }
+
+    public List<Historico> getHistoricos() {
+        return historicos;
+    }
+
+    public void setHistoricos(List<Historico> historicos) {
+        this.historicos = historicos;
+    }
+    
+    
 }

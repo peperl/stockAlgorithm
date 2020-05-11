@@ -21,11 +21,10 @@ public class BinaryOperations {
          LoadLibrary.loadNativeLibrary();
      }    
 
-    public native long getPercentage(long id, long position);
-    public native long setPercentage(long id, long position, long newValue);
-    public native long initialize(long id, long inversionsOn);
-    public native long aquote(long id);
-    public native long setId(long id, long inversionsOn);
-    public native long cross(long id1, long id2);
-    public native long mutation(long id);   
+    public native long getPercentage(long id_part1, long position);
+    public native long setPercentage(long id_part, long position, long newValue);
+    public native long getValoresActivos(long valoresActivos, long parts);
+    public native long setId(long id_part, long id_part2, long inversionsOn);
+    public native long aquote_part2(long id, long percentage, long inversionsOn);
+    public native long mutation(long id_part);   
 }

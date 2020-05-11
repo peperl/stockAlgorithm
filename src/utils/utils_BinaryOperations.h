@@ -25,35 +25,27 @@ JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setPercentage
 
 /*
  * Class:     utils_BinaryOperations
- * Method:    initialize
+ * Method:    getValoresActivos
  * Signature: (JJ)J
  */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_initialize
+JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_getValoresActivos
   (JNIEnv *, jobject, jlong, jlong);
-
-/*
- * Class:     utils_BinaryOperations
- * Method:    aquote
- * Signature: (J)J
- */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote
-  (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     utils_BinaryOperations
  * Method:    setId
- * Signature: (JJ)J
+ * Signature: (JJJ)J
  */
 JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_setId
-  (JNIEnv *, jobject, jlong, jlong);
+  (JNIEnv *, jobject, jlong, jlong, jlong);
 
 /*
  * Class:     utils_BinaryOperations
- * Method:    cross
- * Signature: (JJ)J
+ * Method:    aquote_part2
+ * Signature: (JJJ)J
  */
-JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_cross
-  (JNIEnv *, jobject, jlong, jlong);
+JNIEXPORT jlong JNICALL Java_utils_BinaryOperations_aquote_1part2
+  (JNIEnv *, jobject, jlong, jlong, jlong);
 
 /*
  * Class:     utils_BinaryOperations
