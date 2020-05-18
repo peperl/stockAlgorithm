@@ -113,9 +113,6 @@ long getValoresActivos(long valoresActivos, long part) {
     }
 }
 
-
-
-
 /*
  * Class:     utils_BinaryOperations
  * Method:    getPercentage

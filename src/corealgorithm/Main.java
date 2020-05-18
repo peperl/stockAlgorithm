@@ -40,8 +40,8 @@ public class Main {
             List<Historico> a =dao.getHistoricos();
             List<Valor> b = dao.getValores();
             
-            //Prueba con 365 días
-            int valorPorUsuario = 2000;
+            //Prueba con 2000 días
+            int valorPorUsuario = 365;
             ValoresActivos va = new ValoresActivos();
             
             int cont = 0;
@@ -51,8 +51,10 @@ public class Main {
                 }
                 cont++;
             }
-            CoreAlgorithm ca = new CoreAlgorithm(valorPorUsuario, 5000, va, 1000);
-            BinaryOperations bo = new BinaryOperations();
+            CoreAlgorithm ca = new CoreAlgorithm(valorPorUsuario, 5000, va, 1,a,b);
+            for (Portfolio portfolio : ca.getPortfolios()) {
+                System.out.println("aptitud: " + portfolio.getAptitud());
+            }
             
             
         } catch (ClassNotFoundException ex) {

@@ -1,6 +1,8 @@
 package Beans;
 
 
+import BeansDB.Historico;
+import BeansDB.Valor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +21,8 @@ import utils.BinaryOperations;
 public class CoreAlgorithm {
     
     List<Portfolio> portfolios;
+    List<Historico> historicos;
+    List<Valor> valores;
     
     
     /**
@@ -27,10 +31,16 @@ public class CoreAlgorithm {
      * @param money en pesos mexicanos
      * @param interes en rendimiento anual
      */
-    public CoreAlgorithm(int time, double money, ValoresActivos va, int populationSize){
+    public CoreAlgorithm(int time, double money, ValoresActivos va, int populationSize, List<Historico> historicos, List<Valor> valores){
         
         portfolios = new ArrayList<>();
+        this.historicos = historicos;
+        this.valores = valores;
+        
         initialPopulation(populationSize, va);        
+        
+        calcularAptitud(portfolios, historicos, valores, time);
+        
         
         //ETAPA 3
         //CRUZA
@@ -89,9 +99,57 @@ public class CoreAlgorithm {
     }
 
     
-    private List<Long> cross(List<Long> longValues) {
+    private List<Long> cross(List<Portfolio> portfolios) {
         
         return null;
     }
-    
+
+    private void calcularAptitud(List<Portfolio> portfolios, List<Historico> historicos, List<Valor> valores, int time) {
+        
+        BinaryOperations bo = new BinaryOperations();
+        
+        for (Portfolio portfolio : portfolios) {
+            
+            long id_part1 = portfolio.getId_part1();
+            long id_part2 = portfolio.getId_part2();
+            float aptitud = 0;
+            
+            for (int i = 0; i < 9; i++) {
+                
+                float tasa = historicos.get(i).getTasa();
+                int plazo = historicos.get(i).getPlazo();
+                int plazo_completo = valores.get(i).getPlazo_completo();
+                //variable tiempo
+                
+                long percentage = bo.getPercentage(id_part1, i);
+                aptitud += percentage * tasa;
+                System.out.println("int " + i +" time " + time);
+                int complete_Time = time-plazo;
+                
+                while (complete_Time > plazo_completo) {
+                    System.out.println("completeTime " + complete_Time);
+                    aptitud += (percentage * tasa);
+                    complete_Time -= plazo_completo;
+                }
+            }
+            
+            for (int i = 9; i < 18; i++) {
+                
+                float tasa = historicos.get(i).getTasa();
+                int plazo = historicos.get(i).getPlazo();
+                int plazo_completo = valores.get(i).getPlazo_completo();
+                //variable tiempo
+                
+                long percentage = bo.getPercentage(id_part2, i);
+                aptitud += (percentage * tasa);
+                int complete_Time = time-plazo;
+                
+                while (complete_Time < plazo_completo) {
+                    aptitud += (percentage * tasa);
+                    complete_Time -= plazo_completo;
+                }
+            }
+            portfolio.setAptitud(aptitud/100);
+        }
+    }
 }

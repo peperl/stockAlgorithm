@@ -26,5 +26,6 @@ public class BinaryOperations {
     public native long getValoresActivos(long valoresActivos, long parts);
     public native long setId(long id_part, long id_part2, long inversionsOn);
     public native long aquote_part2(long id, long percentage, long inversionsOn);
-    public native long mutation(long id_part);   
+    public native long mutation(long id_part);
+    
 }
