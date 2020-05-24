@@ -14,6 +14,14 @@ public class Portfolio {
     private long id_part1, id_part2;
     private float aptitud;
 
+    public Portfolio() {
+    }
+
+    Portfolio(long id_part1, long id_part2) {
+            this.id_part1 = id_part1;
+            this.id_part2 = id_part1;
+    }
+
     public long getId_part1() {
         return id_part1;
     }
