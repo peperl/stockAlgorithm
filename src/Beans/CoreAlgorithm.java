@@ -49,10 +49,12 @@ public class CoreAlgorithm {
         
         //ETAPA 3
         //CRUZA
-        cross(portfolios, populationSize, time, va);
+        crossTotal(portfolios, populationSize, time, va);
         
         //ETAPA 4
         //MUTACIÓN
+        
+        
         
     }
 
@@ -92,7 +94,6 @@ public class CoreAlgorithm {
             portfolios.add(portfolio);
         }
         
-        
     }   
 
     public List<Portfolio> getPortfolios() {
@@ -104,7 +105,7 @@ public class CoreAlgorithm {
     }
 
     
-    private void cross(List<Portfolio> portfolios, int populationSize, int time, ValoresActivos valoresActivos) {
+    private void crossTotal(List<Portfolio> portfolios, int populationSize, int time, ValoresActivos valoresActivos) {
         
         Random random = new Random();
         List<Portfolio> newPortfolios = new ArrayList<> ();
@@ -249,5 +250,59 @@ public class CoreAlgorithm {
             bestPortfolio = portfolio;
         }
         
+    }
+
+    private Portfolio mutation (Portfolio portfolio, int time) {
+        BinaryOperations bo = new BinaryOperations();
+        Random random = new Random();
+        
+        int a = random.nextInt(18) % 18;
+        int b = random.nextInt(18) % 18;
+        
+        if (a == b) {
+            b = (b + 1) % 18;
+        }
+        
+        if (a > 9) {
+            if (b > 9) {
+                bo.setPercentage(portfolio.getId_part2(), 1, bo.getPercentage(portfolio.getId_part2(), a) + 1);
+                bo.setPercentage(portfolio.getId_part2(), 1, bo.getPercentage(portfolio.getId_part2(), b) - 1);
+            } else {
+                bo.setPercentage(portfolio.getId_part2(), 1, bo.getPercentage(portfolio.getId_part2(), a) + 1);
+                bo.setPercentage(portfolio.getId_part1(), 1, bo.getPercentage(portfolio.getId_part1(), b) - 1);
+            }
+            
+        } else {
+            if (b > 9) {
+                bo.setPercentage(portfolio.getId_part1(), 1, bo.getPercentage(portfolio.getId_part1(), a) + 1);
+                bo.setPercentage(portfolio.getId_part2(), 1, bo.getPercentage(portfolio.getId_part2(), b) - 1);
+                
+            } else {
+                bo.setPercentage(portfolio.getId_part1(), 1, bo.getPercentage(portfolio.getId_part1(), a) + 1);
+                bo.setPercentage(portfolio.getId_part1(), 1, bo.getPercentage(portfolio.getId_part1(), b) - 1);
+            }
+        }
+        return calcularAptitud(portfolio, historicos, valores, time);
+    }
+
+    
+    private void mutationTotal (int time) {
+        
+        List<Portfolio> newPortfolios = new ArrayList<>();
+        Random random = new Random();
+        Portfolio portfolio, portfolio2;
+        
+        for (int i = 0; i < populationSize; i++) {
+            
+            portfolio = portfolios.remove(random.nextInt(populationSize) % populationSize);
+            portfolio2 = mutation(portfolio, time);
+            if (portfolio.getAptitud() > portfolio2.getAptitud()) {
+                newPortfolios.add(portfolio);
+            } else {
+                newPortfolios.add(portfolio2);
+            }
+        }
+        
+        portfolios = newPortfolios;
     }
 }
